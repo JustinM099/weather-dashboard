@@ -1,0 +1,30 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: gray;
+}
+
+.sidebar {
+    background-color: lightskyblue;
+    height: 100vh;
+}
+
+.very-high {
+    background-color: red;
+}
+
+.high {
+    background-color: orange;
+}
+
+.moderate {
+    background-color: yellow;
+}
+
+.low {
+
+    background-color: green;
+}
