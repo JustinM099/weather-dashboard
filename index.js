@@ -1,12 +1,6 @@
-
-
-let oneCallUrl
-let oneCallData
-let historyContent
 let contentArea = $('#content-area')
 let searchInput = $('#search-input')
 let todayContent = $('#today-content')
-let currentUrl
 let searchHistoryArea = $('#search-history')
 let historyStorage = []
 
@@ -42,7 +36,7 @@ searchHistoryArea.on('click', '.history-button', function (event) {
 })
 
 function getCity() {
-    currentUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + $('#search-input').val() + "&appid=abb217f1783beff98446899f849fdebe&units=imperial"
+    let currentUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + $('#search-input').val() + "&appid=abb217f1783beff98446899f849fdebe&units=imperial"
 
     fetch(currentUrl)
         .then(response => {
@@ -50,16 +44,18 @@ function getCity() {
                 return response.json()
             } else if (response.status === 404) {
                 todayContent.text('Error: 404. City not found. Please try again.')
+                $('#search-input').val('')
                 return Promise.reject('error 404')
                 
             } else {
                 todayContent.text('Error. City not found. Please try again.')
+                $('#search-input').val('')
                 return Promise.reject('some other error: ' + response.status)
             }
         })
         .then(function (data) {
 
-            oneCallUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + data.city.coord.lat + "&lon=" + data.city.coord.lon + "&appid=abb217f1783beff98446899f849fdebe&units=imperial"
+            let oneCallUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + data.city.coord.lat + "&lon=" + data.city.coord.lon + "&appid=abb217f1783beff98446899f849fdebe&units=imperial"
             console.log(oneCallUrl)
 
             fetch(oneCallUrl)
