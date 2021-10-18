@@ -8,6 +8,7 @@ let searchInput = $('#search-input')
 let todayContent = $('#today-content')
 let currentUrl
 let searchHistoryArea = $('#search-history')
+let historyStorage = []
 
 $('#submit-button').click(function (event) {
     event.preventDefault()
@@ -57,15 +58,18 @@ function getCity() {
                     let todayWind = data.current.wind_speed
                     let todayHumidity = data.current.humidity
                     let todayUvi = data.current.uvi
-                    let historyStorage = []
+                    let todayIcon = data.current.weather[0].icon
+                    console.log(todayIcon)
 
-                    let todayObject = $('<p>')
+
+                    let todayObject = $('<h2>')
                     let todayTempObject = $('<p>')
                     let todayWindObject = $('<p>')
                     let todayHumidityObject = $('<p>')
                     let todayUviObject = $('<p>')
                     let cityObject = $('<p>')
-
+                    let todayIconObject = $('<img>')
+                    let todayCard = $('<div>')
 
                     if(todayUvi >= 8){
                         todayUviObject.addClass('very-high')
@@ -86,8 +90,15 @@ function getCity() {
                     todayUviObject.text('UVI Index: ' + todayUvi)
                     cityObject.text(cityCapitalized)
                     cityObject.addClass('history-button')
+                    cityObject.addClass('card')
+                    $(todayIconObject).attr('src', 'https://openweathermap.org/img/wn/' + todayIcon + '.png')
+                    $(todayIconObject).attr('height', '50px')
+                    $(todayIconObject).attr('width', '50px')
+                    todayCard.addClass('card')
+                    
 
-                    todayContent.append(todayObject, todayTempObject, todayWindObject, todayHumidityObject, todayUviObject)
+                    todayCard.append(todayObject, todayIconObject, todayTempObject, todayWindObject, todayHumidityObject, todayUviObject)
+                    todayContent.append(todayCard)
                     searchHistoryArea.prepend(cityObject)
                     historyStorage.push(cityObject.text())
                     localStorage.setItem('searchHistory', JSON.stringify(historyStorage))
@@ -101,14 +112,15 @@ function getCity() {
                         let wind = data.daily[i].wind_speed
                         let humidity = data.daily[i].humidity
                         let uvi = data.daily[i].uvi
-                        console.log(uvi)
+                        let icon = data.daily[i].weather[0].icon
 
-                        let dateObject = $('<p>')
+                        let dateObject = $('<h3>')
                         let tempObject = $('<p>')
                         let windObject = $('<p>')
                         let humidityObject = $('<p>')
                         let uviObject = $('<p>')
                         let dailyCard = $('<div>')
+                        let iconObject = $('<img>')
 
                         dateObject.text(date)
                         tempObject.text('Temp: ' + temp + '°F')
@@ -117,6 +129,9 @@ function getCity() {
                         uviObject.text('UVI Index: ' + uvi)
                         dailyCard.addClass('card')
                         dailyCard.addClass('col')
+                        $(iconObject).attr('src', 'https://openweathermap.org/img/wn/' + icon + '.png')
+                        $(iconObject).attr('height', '50px')
+                        $(iconObject).attr('width', '50px')
 
                         if(uvi >= 8){
                             uviObject.addClass('very-high')
@@ -132,7 +147,7 @@ function getCity() {
                     
                         
 
-                        dailyCard.append(dateObject, tempObject, windObject, humidityObject, uviObject)
+                        dailyCard.append(dateObject, iconObject, tempObject, windObject, humidityObject, uviObject)
                         contentArea.append(dailyCard)
                         
 
@@ -156,6 +171,7 @@ function fillSearchHistory(){
             let historyObject = $('<p>')
             historyObject.text(historyFromStorage[i])
             historyObject.addClass('history-button')
+            historyObject.addClass('card')
             searchHistoryArea.prepend(historyObject)
             console.log(historyObject)
     
