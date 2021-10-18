@@ -108,6 +108,7 @@ function getCity() {
                     todayWindObject.text('Wind: ' + todayWind + ' MPH')
                     todayHumidityObject.text('Humidity: ' + todayHumidity + '%')
                     todayUviObject.text('UVI Index: ' + todayUvi)
+                    todayUviObject.addClass('uvi-display')
                     cityObject.text(cityCapitalized)
                     cityObject.addClass('history-button')
                     cityObject.addClass('card')
