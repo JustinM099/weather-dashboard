@@ -14,15 +14,24 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container-fluid">
-            <a class="navbar-brand mx-auto" href="#">Weather Dashboard</a>
+            <h1 class="navbar-brand mx-auto">Weather Dashboard</h1>
         </div>
     </nav>
 
     <div class="container-fluid row">
         <div class="col-3 sidebar p-3">
             <h3>Search for a City:</h3>
-            <input type="search" id="search-input" name="q" aria-label="Search for a city">
-            <button id="submit-button" class="submit-button">Search</button>
+            <br>
+            <div class="input-group input-group-lg">
+                <input type="search" id="search-input" name="q" class="form-control" aria-label="Search for a city">
+                <br>
+                <br>
+                <button id="submit-button" class="submit-button btn btn-secondary">Search</button>
+            </div>
+            <br>
+            <hr>
+            <br>
+            <br>
             <div id="search-history"></div>
         </div>
 

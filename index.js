@@ -15,29 +15,47 @@ $('#submit-button').click(function (event) {
     // console.log('submit button clicked')
     todayContent.text('')
     contentArea.text('')
-    getCity()  
+    getCity()
 
     console.log(currentUrl)
- 
+
 })
 
-searchHistoryArea.on('click', '.history-button', function(event) {
+$(document).keypress(function(event){
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if(keycode == '13'){
+        todayContent.text('')
+        contentArea.text('')
+        getCity() 
+    }
+});
+
+searchHistoryArea.on('click', '.history-button', function (event) {
     // console.log('submit button clicked')
     document.getElementById("search-input").value = $(this).text()
     todayContent.text('')
     contentArea.text('')
     getCity()
     console.log('clicked ', currentUrl)
-    
- 
+
+
 })
 
 function getCity() {
     currentUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + $('#search-input').val() + "&appid=abb217f1783beff98446899f849fdebe&units=imperial"
 
     fetch(currentUrl)
-        .then(function (response) {
-            return response.json()
+        .then(response => {
+            if (response.ok) {
+                return response.json()
+            } else if (response.status === 404) {
+                todayContent.text('Error: 404. City not found. Please try again.')
+                return Promise.reject('error 404')
+                
+            } else {
+                todayContent.text('Error. City not found. Please try again.')
+                return Promise.reject('some other error: ' + response.status)
+            }
         })
         .then(function (data) {
 
@@ -45,13 +63,19 @@ function getCity() {
             console.log(oneCallUrl)
 
             fetch(oneCallUrl)
-                .then(function (response) {
-                    return response.json()
+                .then(response => {
+                    if (response.ok) {
+                        return response.json()
+                    } else if (response.status === 404) {
+                        return Promise.reject('error 404')
+                    } else {
+                        return Promise.reject('some other error: ' + response.status)
+                    }
                 })
                 .then(function (data) {
                     console.log(data)
-                    
-                    
+
+
                     let cityCapitalized = capitalize($('#search-input').val())
                     let today = moment().format('MMMM Do YYYY')
                     let todayTemp = data.current.temp
@@ -71,15 +95,15 @@ function getCity() {
                     let todayIconObject = $('<img>')
                     let todayCard = $('<div>')
 
-                    if(todayUvi >= 8){
+                    if (todayUvi >= 8) {
                         todayUviObject.addClass('very-high')
-                    }else if(todayUvi >= 6){
+                    } else if (todayUvi >= 6) {
                         todayUviObject.addClass('high')
-                    }else if(todayUvi >= 3){
+                    } else if (todayUvi >= 3) {
                         todayUviObject.addClass('moderate')
-                    }else if(todayUvi == 0){
+                    } else if (todayUvi == 0) {
                         todayUviObject.addClass('low')
-                    }else{
+                    } else {
                         todayUviObject.addClass('low')
                     }
 
@@ -95,7 +119,7 @@ function getCity() {
                     $(todayIconObject).attr('height', '50px')
                     $(todayIconObject).attr('width', '50px')
                     todayCard.addClass('card')
-                    
+
 
                     todayCard.append(todayObject, todayIconObject, todayTempObject, todayWindObject, todayHumidityObject, todayUviObject)
                     todayContent.append(todayCard)
@@ -106,8 +130,8 @@ function getCity() {
 
                     $('#search-input').val('')
 
-                    for(i = 0; i < 5; i++){
-                        let date = moment().add(i+1, 'days').format('MMM Do YYYY')
+                    for (i = 0; i < 5; i++) {
+                        let date = moment().add(i + 1, 'days').format('MMM Do YYYY')
                         let temp = data.daily[i].temp.day
                         let wind = data.daily[i].wind_speed
                         let humidity = data.daily[i].humidity
@@ -133,50 +157,53 @@ function getCity() {
                         $(iconObject).attr('height', '50px')
                         $(iconObject).attr('width', '50px')
 
-                        if(uvi >= 8){
+                        if (uvi >= 8) {
                             uviObject.addClass('very-high')
-                        }else if(uvi >= 6){
+                        } else if (uvi >= 6) {
                             uviObject.addClass('high')
-                        }else if(uvi >= 3){
+                        } else if (uvi >= 3) {
                             uviObject.addClass('moderate')
-                        }else if(uvi == 0){
+                        } else if (uvi == 0) {
                             uviObject.addClass('low')
-                        }else{
+                        } else {
                             uviObject.addClass('low')
                         }
-                    
-                        
+
+
 
                         dailyCard.append(dateObject, iconObject, tempObject, windObject, humidityObject, uviObject)
                         contentArea.append(dailyCard)
-                        
 
-                }})
 
-})}
+                    }
+                })
 
-function capitalize(word){
+        })
+}
+
+function capitalize(word) {
     let lower = word.toLowerCase()
     return word.charAt(0).toUpperCase() + lower.slice(1)
 }
 
-function fillSearchHistory(){
+function fillSearchHistory() {
     // if(!historyFromStorage){
     //     console.log('no dice, bud')
     //     return
     // }else{
-        let historyFromStorage = JSON.parse(localStorage.getItem('searchHistory'))
-        console.log(historyFromStorage)
-        for(i = 0; i < historyFromStorage.length; i++){
-            let historyObject = $('<p>')
-            historyObject.text(historyFromStorage[i])
-            historyObject.addClass('history-button')
-            historyObject.addClass('card')
-            searchHistoryArea.prepend(historyObject)
-            console.log(historyObject)
-    
+    let historyFromStorage = JSON.parse(localStorage.getItem('searchHistory'))
+    console.log(historyFromStorage)
+    for (i = 0; i < historyFromStorage.length; i++) {
+        let historyObject = $('<p>')
+        historyObject.text(historyFromStorage[i])
+        historyObject.addClass('history-button')
+        historyObject.addClass('card')
+        searchHistoryArea.prepend(historyObject)
+        console.log(historyObject)
+
     }
 
 }
 
 fillSearchHistory()
+

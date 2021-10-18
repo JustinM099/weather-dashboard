@@ -10,6 +10,7 @@ body {
 .sidebar {
     background-color: lightskyblue;
     height: 100vh;
+    text-align: center;
 }
 
 .very-high {
@@ -33,7 +34,10 @@ body {
     margin: 1%;
     padding: 1%;
     box-shadow: 10px 5px 5px;
+    
 }
+
+
 
 .container-fluid {
     padding-right:0;
@@ -41,3 +45,15 @@ body {
     margin-right:auto;
     margin-left:auto
  }
+
+ .history-button {
+    transition: transform 0.2s linear;
+    margin-top: 3%;
+    text-align: center;
+ }
+
+ .history-button:hover {
+    box-shadow: 0 5px 15px rgb(14, 13, 13);
+    transform: translateY(-7px);
+ }
+
