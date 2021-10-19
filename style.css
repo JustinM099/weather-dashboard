@@ -50,12 +50,14 @@ body {
     transition: transform 0.2s linear;
     margin-top: 3%;
     text-align: center;
+    cursor: pointer;
  }
 
  .history-button:hover {
     box-shadow: 0 5px 15px rgb(14, 13, 13);
     transform: translateY(-7px);
  }
+
 
 .uvi-display {
     width: 10%

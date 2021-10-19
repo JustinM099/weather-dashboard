@@ -1,5 +1,4 @@
 let contentArea = $('#content-area')
-let searchInput = $('#search-input')
 let todayContent = $('#today-content')
 let searchHistoryArea = $('#search-history')
 let historyStorage = []
