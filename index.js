@@ -10,8 +10,6 @@ $('#submit-button').click(function (event) {
     contentArea.text('')
     getCity()
 
-    console.log(currentUrl)
-
 })
 
 $(document).keypress(function(event){
@@ -23,23 +21,22 @@ $(document).keypress(function(event){
     }
 });
 
-searchHistoryArea.on('click', '.history-button', function (event) {
+searchHistoryArea.on('click', '.history-button', function () {
     // console.log('submit button clicked')
     document.getElementById("search-input").value = $(this).text()
     todayContent.text('')
     contentArea.text('')
     getCity()
-    console.log('clicked ', currentUrl)
 
 
 })
 
 function getCity() {
-    let currentUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + $('#search-input').val() + "&appid=abb217f1783beff98446899f849fdebe&units=imperial"
-
-    fetch(currentUrl)
+    let url = "https://api.openweathermap.org/data/2.5/forecast?q=" + $('#search-input').val() + "&appid=abb217f1783beff98446899f849fdebe&units=imperial"
+    fetch(url)
         .then(response => {
             if (response.ok) {
+                console.log(url)
                 return response.json()
             } else if (response.status === 404) {
                 todayContent.text('Error: 404. City not found. Please try again.')
@@ -148,7 +145,9 @@ function getCity() {
                         humidityObject.text('Humidity: ' + humidity + '%')
                         uviObject.text('UVI Index: ' + uvi)
                         dailyCard.addClass('card')
-                        dailyCard.addClass('col')
+                        dailyCard.addClass('col-md')
+                        dailyCard.addClass('col-xl')
+                        dailyCard.addClass('col-sm-12')
                         $(iconObject).attr('src', 'https://openweathermap.org/img/wn/' + icon + '.png')
                         $(iconObject).attr('height', '50px')
                         $(iconObject).attr('width', '50px')
