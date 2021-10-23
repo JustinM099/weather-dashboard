@@ -1,17 +1,19 @@
+//targeting html elements and adding historyStorage as a global
 let contentArea = $('#content-area')
 let todayContent = $('#today-content')
 let searchHistoryArea = $('#search-history')
 let historyStorage = []
 
+//submit button onclick
 $('#submit-button').click(function (event) {
     event.preventDefault()
-    // console.log('submit button clicked')
     todayContent.text('')
     contentArea.text('')
     getCity()
 
 })
 
+//enter key keypress
 $(document).keypress(function(event){
     var keycode = (event.keyCode ? event.keyCode : event.which);
     if(keycode == '13'){
@@ -21,6 +23,7 @@ $(document).keypress(function(event){
     }
 });
 
+//search history onclick
 searchHistoryArea.on('click', '.history-button', function () {
     // console.log('submit button clicked')
     document.getElementById("search-input").value = $(this).text()
@@ -31,8 +34,9 @@ searchHistoryArea.on('click', '.history-button', function () {
 
 })
 
+//the heavy lifting. calls both APIs, gets data, puts it on the page.
 function getCity() {
-    let url = "https://api.openweathermap.org/data/2.5/forecast?q=" + $('#search-input').val() + "&appid=abb217f1783beff98446899f849fdebe&units=imperial"
+    let url = "https://api.openweathermap.org/data/2.5/forecast?q=" + $('#search-input').val() + "&appid=abb217f1783beff98446899f849fdebe&units=imperial" //gets lat & lon for city name
     fetch(url)
         .then(response => {
             if (response.ok) {
@@ -51,7 +55,7 @@ function getCity() {
         })
         .then(function (data) {
 
-            let oneCallUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + data.city.coord.lat + "&lon=" + data.city.coord.lon + "&appid=abb217f1783beff98446899f849fdebe&units=imperial"
+            let oneCallUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + data.city.coord.lat + "&lon=" + data.city.coord.lon + "&appid=abb217f1783beff98446899f849fdebe&units=imperial" //main API we use
             console.log(oneCallUrl)
 
             fetch(oneCallUrl)
@@ -61,7 +65,7 @@ function getCity() {
                     } else if (response.status === 404) {
                         return Promise.reject('error 404')
                     } else {
-                        return Promise.reject('some other error: ' + response.status)
+                        return Promise.reject('some other error: ' + response.status) //catching errors
                     }
                 })
                 .then(function (data) {
@@ -74,7 +78,7 @@ function getCity() {
                     let todayWind = data.current.wind_speed
                     let todayHumidity = data.current.humidity
                     let todayUvi = data.current.uvi
-                    let todayIcon = data.current.weather[0].icon
+                    let todayIcon = data.current.weather[0].icon //gets today's data from API
                     console.log(todayIcon)
 
 
@@ -85,7 +89,7 @@ function getCity() {
                     let todayUviObject = $('<p>')
                     let cityObject = $('<p>')
                     let todayIconObject = $('<img>')
-                    let todayCard = $('<div>')
+                    let todayCard = $('<div>') //creates elements for today's data
 
                     if (todayUvi >= 8) {
                         todayUviObject.addClass('very-high')
@@ -96,7 +100,7 @@ function getCity() {
                     } else if (todayUvi == 0) {
                         todayUviObject.addClass('low')
                     } else {
-                        todayUviObject.addClass('low')
+                        todayUviObject.addClass('low') //UV colors
                     }
 
                     todayObject.text(cityCapitalized + ' (' + today + ')')
@@ -111,17 +115,17 @@ function getCity() {
                     $(todayIconObject).attr('src', 'https://openweathermap.org/img/wn/' + todayIcon + '.png')
                     $(todayIconObject).attr('height', '50px')
                     $(todayIconObject).attr('width', '50px')
-                    todayCard.addClass('card')
+                    todayCard.addClass('card') //puts content on elements
 
 
-                    todayCard.append(todayObject, todayIconObject, todayTempObject, todayWindObject, todayHumidityObject, todayUviObject)
+                    todayCard.append(todayObject, todayIconObject, todayTempObject, todayWindObject, todayHumidityObject, todayUviObject) //adds elements to page
                     todayContent.append(todayCard)
                     searchHistoryArea.prepend(cityObject)
                     historyStorage.push(cityObject.text())
-                    localStorage.setItem('searchHistory', JSON.stringify(historyStorage))
-                    console.log(localStorage.getItem('searchHistory'))
+                    localStorage.setItem('searchHistory', JSON.stringify(historyStorage))  //puts searches into local storage
 
-                    $('#search-input').val('')
+
+                    $('#search-input').val('') //clears search field
 
                     for (i = 0; i < 5; i++) {
                         let date = moment().add(i + 1, 'days').format('MMM Do YYYY')
@@ -129,7 +133,7 @@ function getCity() {
                         let wind = data.daily[i].wind_speed
                         let humidity = data.daily[i].humidity
                         let uvi = data.daily[i].uvi
-                        let icon = data.daily[i].weather[0].icon
+                        let icon = data.daily[i].weather[0].icon //gets data for forecast
 
                         let dateObject = $('<h3>')
                         let tempObject = $('<p>')
@@ -137,7 +141,7 @@ function getCity() {
                         let humidityObject = $('<p>')
                         let uviObject = $('<p>')
                         let dailyCard = $('<div>')
-                        let iconObject = $('<img>')
+                        let iconObject = $('<img>') //creates forecast elements
 
                         dateObject.text(date)
                         tempObject.text('Temp: ' + temp + '°F')
@@ -150,7 +154,7 @@ function getCity() {
                         dailyCard.addClass('col-sm-12')
                         $(iconObject).attr('src', 'https://openweathermap.org/img/wn/' + icon + '.png')
                         $(iconObject).attr('height', '50px')
-                        $(iconObject).attr('width', '50px')
+                        $(iconObject).attr('width', '50px') //adds forecast element content
 
                         if (uvi >= 8) {
                             uviObject.addClass('very-high')
@@ -161,13 +165,13 @@ function getCity() {
                         } else if (uvi == 0) {
                             uviObject.addClass('low')
                         } else {
-                            uviObject.addClass('low')
-                        }
+                            uviObject.addClass('low') 
+                        } //uvi colors
 
 
 
-                        dailyCard.append(dateObject, iconObject, tempObject, windObject, humidityObject, uviObject)
-                        contentArea.append(dailyCard)
+                        dailyCard.append(dateObject, iconObject, tempObject, windObject, humidityObject, uviObject) //puts into card
+                        contentArea.append(dailyCard) //puts card on page
 
 
                     }
@@ -178,7 +182,7 @@ function getCity() {
 
 function capitalize(word) {
     let lower = word.toLowerCase()
-    return word.charAt(0).toUpperCase() + lower.slice(1)
+    return word.charAt(0).toUpperCase() + lower.slice(1) //capitalizes city names
 }
 
 function fillSearchHistory() {
@@ -190,7 +194,7 @@ function fillSearchHistory() {
         historyObject.addClass('history-button')
         historyObject.addClass('card')
         searchHistoryArea.prepend(historyObject)
-        console.log(historyObject)
+        console.log(historyObject) //fills search history from local storage
 
     }
 
