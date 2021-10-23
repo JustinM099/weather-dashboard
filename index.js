@@ -182,10 +182,6 @@ function capitalize(word) {
 }
 
 function fillSearchHistory() {
-    // if(!historyFromStorage){
-    //     console.log('no dice, bud')
-    //     return
-    // }else{
     let historyFromStorage = JSON.parse(localStorage.getItem('searchHistory'))
     console.log(historyFromStorage)
     for (i = 0; i < historyFromStorage.length; i++) {
