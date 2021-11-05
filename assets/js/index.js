@@ -185,6 +185,15 @@ function capitalize(word) {
     return word.charAt(0).toUpperCase() + lower.slice(1) //capitalizes city names
 }
 
+// function capitalizeString(string){
+//     console.log(string)
+//     const mySentence = string
+//     const words = mySentence.split(" ");
+//     words.map((word) => { 
+//         return word[0].toUpperCase() + word.substring(1); 
+//     }).join(" ");
+// }
+
 function fillSearchHistory() {
     let historyFromStorage = JSON.parse(localStorage.getItem('searchHistory'))
     console.log(historyFromStorage)

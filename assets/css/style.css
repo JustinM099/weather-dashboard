@@ -8,7 +8,7 @@ body {
 }
 
 .sidebar {
-    background-color: lightskyblue;
+    background-color: rgb(135, 175, 250);
     height: 100vh;
     text-align: center;
 }
