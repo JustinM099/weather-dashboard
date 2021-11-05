@@ -27,9 +27,10 @@ After a city has been entered, it is prepended into a search history displayed b
 ### Screenshot
 
 
-Here is a screenshot of the dashboard: 
+Here are two screenshots of the dashboard: 
 
 ![screenshot](weather-dashboard-screenshot.png)
+![screenshot](weather-app-dashboard-2.png)
 
 
 
