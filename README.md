@@ -17,6 +17,12 @@ wind speed, humidity, and UVI index for that day.
 After a city has been entered, it is prepended into a search history displayed below the search field. Any city in the search history can be clicked on and its data will be displayed. This information is stored in local storage. 
 
 
+### Technologies Used
+  -Javascript
+  -jQuery
+  -HTML
+  -CSS
+
 
 ### Screenshot
 
