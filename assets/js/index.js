@@ -25,7 +25,6 @@ $(document).keypress(function(event){
 
 //search history onclick
 searchHistoryArea.on('click', '.history-button', function () {
-    // console.log('submit button clicked')
     document.getElementById("search-input").value = $(this).text()
     todayContent.text('')
     contentArea.text('')
@@ -40,7 +39,6 @@ function getCity() {
     fetch(url)
         .then(response => {
             if (response.ok) {
-                console.log(url)
                 return response.json()
             } else if (response.status === 404) {
                 todayContent.text('Error: 404. City not found. Please try again.')
@@ -56,7 +54,6 @@ function getCity() {
         .then(function (data) {
 
             let oneCallUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + data.city.coord.lat + "&lon=" + data.city.coord.lon + "&appid=abb217f1783beff98446899f849fdebe&units=imperial" //main API we use
-            console.log(oneCallUrl)
 
             fetch(oneCallUrl)
                 .then(response => {
@@ -68,9 +65,7 @@ function getCity() {
                         return Promise.reject('some other error: ' + response.status) //catching errors
                     }
                 })
-                .then(function (data) {
-                    console.log(data)
-
+                .then(function (data) { //promise
 
                     let cityCapitalized = capitalize($('#search-input').val())
                     let today = moment().format('MMMM Do YYYY')
@@ -79,7 +74,6 @@ function getCity() {
                     let todayHumidity = data.current.humidity
                     let todayUvi = data.current.uvi
                     let todayIcon = data.current.weather[0].icon //gets today's data from API
-                    console.log(todayIcon)
 
 
                     let todayObject = $('<h2>')
@@ -185,28 +179,15 @@ function capitalize(word) {
     return word.charAt(0).toUpperCase() + lower.slice(1) //capitalizes city names
 }
 
-// function capitalizeString(string){
-//     console.log(string)
-//     const mySentence = string
-//     const words = mySentence.split(" ");
-//     words.map((word) => { 
-//         return word[0].toUpperCase() + word.substring(1); 
-//     }).join(" ");
-// }
-
 function fillSearchHistory() {
     let historyFromStorage = JSON.parse(localStorage.getItem('searchHistory'))
-    console.log(historyFromStorage)
     for (i = 0; i < historyFromStorage.length; i++) {
         let historyObject = $('<p>')
         historyObject.text(historyFromStorage[i])
         historyObject.addClass('history-button')
         historyObject.addClass('card')
-        searchHistoryArea.prepend(historyObject)
-        console.log(historyObject) //fills search history from local storage
-
+        searchHistoryArea.prepend(historyObject)//fills search history from local storage
     }
-
 }
 
 fillSearchHistory()
